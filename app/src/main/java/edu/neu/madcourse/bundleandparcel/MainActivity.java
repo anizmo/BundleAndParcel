@@ -1,80 +1,45 @@
 package edu.neu.madcourse.bundleandparcel;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 
 /**
- * This class represents the main activity of the application.
+ * This activity displays two buttons to open different examples, the first one demonstrates how
+ * bundles can be used to save state of an activity through rotation of device.
+ * The second example, demonstrates how you can use Bundles and Parcels to transfer data from one
+ * activity to the other.
  */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The current count of the number displayed on the screen.
-     */
-    private int counter = 0;
-
-    /**
-     * The TextView that displays the current count of the number.
-     */
-    private TextView numberCount;
-
-    /**
-     * The key used to save and retrieve the counter value in the saved instance state bundle.
-     */
-    private final String INCREMENT_BUTTON_KEY = "INCREMENT_BUTTON_KEY";
-
-    /**
-     * Called when the activity is starting.
-     *
-     * @param savedInstanceState a Bundle containing the data that was saved during the previous instance of the activity.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        numberCount = findViewById(R.id.numberCount);
-        Button incrementButton = findViewById(R.id.incrementButton);
-
-        incrementButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Called when the increment button is clicked.
-             *
-             * @param view the view that was clicked
-             */
+        // Set click listener for the first button to open BundleSaveStateActivity
+        Button openStatePersistenceExample = findViewById(R.id.openStatePersistenceExample);
+        openStatePersistenceExample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                counter++;
-                numberCount.setText(String.valueOf(counter));
+                Intent intent = new Intent(MainActivity.this, BundleSaveStateActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        // Set click listener for the second button to open SenderActivity
+        Button openDataTransferExample = findViewById(R.id.openDataTransferExample);
+        openDataTransferExample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SenderActivity.class);
+                MainActivity.this.startActivity(intent);
             }
         });
     }
 
-    /**
-     * Called to restore the saved instance state of the activity.
-     *
-     * @param savedInstanceState a Bundle containing the data that was saved during the previous instance of the activity.
-     */
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        counter = savedInstanceState.getInt(INCREMENT_BUTTON_KEY);
-        numberCount.setText(String.valueOf(counter));
-    }
-
-    /**
-     * Called to save the current state of the activity.
-     *
-     * @param outState a Bundle in which to place the saved data.
-     */
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(INCREMENT_BUTTON_KEY, counter);
-    }
 }
